@@ -1,0 +1,88 @@
+
+VOID tf_save_dib(rdpContext* context, UINT32 width, UINT32 height,
+	UINT32 srcFormat, const BYTE* data, BYTE** pdata)
+{
+	BITMAPINFOHEADER infoHeader;
+	BITMAPFILEHEADER fileHeader;
+
+	const int bits = GetBitsPerPixel(srcFormat);
+	const int bitPerPexcel = (bits / 8);
+	const int imageSize = ((width * bits + 31) & ~31) / 8 * height;
+	
+	
+	const int headerSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+
+	infoHeader.biSize = sizeof(BITMAPINFOHEADER);
+	infoHeader.biWidth = width;
+	infoHeader.biHeight = -abs((int)height);
+	infoHeader.biPlanes = 1;
+	infoHeader.biBitCount = bits;
+	infoHeader.biCompression = BI_RGB;
+	infoHeader.biSizeImage = imageSize;
+	infoHeader.biXPelsPerMeter = 0;
+	infoHeader.biYPelsPerMeter = 0;
+	infoHeader.biClrUsed =  0;
+	infoHeader.biClrImportant = 0;
+
+	fileHeader.bfType = 0x4D42;//set the attribute of BITMAPFILEHEADER
+	fileHeader.bfSize = headerSize + imageSize;
+	fileHeader.bfReserved1 = 0;
+	fileHeader.bfReserved2 = 0;
+	fileHeader.bfOffBits = headerSize;
+
+	PCHAR imageData = (PCHAR)malloc(imageSize);
+	memcpy(imageData, data, width*height * 4);
+	TCHAR fileName[20];
+	wsprintf(fileName, TEXT("c://caps//%d.bmp"), index++);
+	HANDLE pFile = CreateFile(fileName,
+		GENERIC_WRITE | GENERIC_READ,
+		FILE_SHARE_READ,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	ULONG written;
+	WriteFile(pFile, &fileHeader, sizeof(BITMAPFILEHEADER), &written, NULL);
+	WriteFile(pFile, &infoHeader, sizeof(BITMAPINFOHEADER), &written, NULL);
+	WriteFile(pFile, imageData, imageSize, &written, NULL);
+	CloseHandle(pFile);
+	free(imageData);
+}
+
+
+static BOOL tf_end_paint(rdpContext* context)
+{
+	rdpGdi* gdi = context->gdi;
+
+	if (gdi->primary->hdc->hwnd->invalid->null)
+		return TRUE;
+
+	draw_args *args = new draw_args;
+	args->x = 0;
+	args->y = 0;
+	args->w = gdi->width;
+	args->h = gdi->height;
+	args->bpp = 4;
+	int size = args->w * args->h * args->bpp;
+	args->buffer = new BYTE[size];
+
+	int dest_pos = 0;
+	for (int i = 0; i < args->h; i++) {
+		// memcopy only columns that are relevant
+		int start_pos = (i * gdi->width * args->bpp);
+		BYTE* src = &gdi->primary_buffer[start_pos];
+		BYTE* dest = &args->buffer[dest_pos];
+		for (int j = 0; j < args->w; j++) {
+			memcpy(dest + j * 4 + 0, src + j * 4 + 3, 1);
+			memcpy(dest + j * 4 + 1, src + j * 4 + 2, 1);
+			memcpy(dest + j * 4 + 2, src + j * 4 + 1, 1);
+			memcpy(dest + j * 4 + 3, src + j * 4 + 0, 1);
+			dest_pos += args->bpp;
+		}
+	}
+
+	tf_save_dib(context, args->w, args->h, context->gdi->dstFormat, args->buffer, NULL);
+	
+	return TRUE;
+}

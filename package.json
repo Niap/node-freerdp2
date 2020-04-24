@@ -1,0 +1,15 @@
+{
+  "name": "node-freerdp2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-gyp clean configure rebuild --msvs_version=2015"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nan": "^2.14.0"
+  }
+}
