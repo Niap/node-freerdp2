@@ -235,7 +235,12 @@ static BOOL tf_end_paint(rdpContext* context)
 {
 	rdpGdi* gdi = context->gdi;
 	if (gdi->primary->hdc->hwnd->invalid->null)
-	return TRUE;
+		return TRUE;
+
+	int ninvalid = gdi->primary->hdc->hwnd->ninvalid;
+
+	if (ninvalid < 1)
+		return TRUE;
 
 	draw_args *args = new draw_args;
 	args->x = gdi->primary->hdc->hwnd->invalid->x;
@@ -253,11 +258,11 @@ static BOOL tf_end_paint(rdpContext* context)
 	int dest_line_width = args->w * args->bpp;
 	for(int i = args->y; i < args->y + args->h; i++) {
 	// memcopy only columns that are relevant
-	int start_pos = (i * gdi->width * args->bpp) + (args->x * args->bpp);
-	BYTE* src = &gdi->primary_buffer[start_pos];
-	BYTE* dest = &args->buffer[dest_pos];
-	memcpy(dest, src, dest_line_width);
-	dest_pos += dest_line_width;
+		int start_pos = (i * gdi->width * args->bpp) + (args->x * args->bpp);
+		BYTE* src = &gdi->primary_buffer[start_pos];
+		BYTE* dest = &args->buffer[dest_pos];
+		memcpy(dest, src, dest_line_width);
+		dest_pos += dest_line_width;
 	}
 
 	nodeContext *nc = (nodeContext*)context;
