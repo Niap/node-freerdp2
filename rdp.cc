@@ -389,5 +389,5 @@ void node_freerdp_send_pointer_event(int session_index, int flags, int x, int y)
   freerdp* instance = session->instance;
   rdpInput* input = instance->input;
 
-  input->MouseEvent(input, flags, x, y);
+  freerdp_input_send_mouse_event(input, flags, x, y);
 }

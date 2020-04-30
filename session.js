@@ -9,7 +9,10 @@ const PTR_FLAGS_DOWN            = 0x8000
 const PTR_FLAGS_BUTTON1         = 0x1000 /* left */
 const PTR_FLAGS_BUTTON2         = 0x2000 /* right */
 const PTR_FLAGS_BUTTON3         = 0x4000 /* middle */
-const WheelRotationMask         = 0x01FF
+
+const PTR_FLAGS_HWHEEL          = 0x0400
+const PTR_FLAGS_WHEEL           = 0x0200
+const PTR_FLAGS_WHEEL_NEGATIVE  = 0x0100
 
 class Session extends EventEmitter {
   constructor(options) {
@@ -23,11 +26,28 @@ class Session extends EventEmitter {
     this.height = options.height || 768;
     this.bitsPerPixel = 24;
     this.certIgnore = options.certIgnore;
-    this,app = options.app;
+    this.app = options.app;
   }
 
   sendKeyEventScancode(code, pressed) {
     rdp.sendKeyEventScancode(this._sessionIndex, code, pressed);
+  }
+
+  sendWheelEvent(x, y, step, isNegative, isHorizontal){
+    var flags = 0;
+    if (isHorizontal)
+      flags |= PTR_FLAGS_HWHEEL;
+    else
+      flags |= PTR_FLAGS_WHEEL;
+    
+
+    if (step < 0)
+    {
+      flags |= PTR_FLAGS_WHEEL_NEGATIVE;
+      step = -step;
+    }
+    flags |= step;
+    rdp.sendPointerEvent(this._sessionIndex, flags, x, y);
   }
 
   sendPointerEvent(x, y,button,isPressed) {
