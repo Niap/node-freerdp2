@@ -23,6 +23,7 @@ class Session extends EventEmitter {
     this.height = options.height || 768;
     this.bitsPerPixel = 24;
     this.certIgnore = options.certIgnore;
+    this,app = options.app;
   }
 
   sendKeyEventScancode(code, pressed) {
@@ -73,8 +74,13 @@ class Session extends EventEmitter {
     params.push(`/bpp:${this.bitsPerPixel}`);
 
     params.push('-clipboard');
-    params.push('/log-level:debug')
+    //params.push('/log-level:debug')
 
+
+    if (this.app) {
+      params.push(`/app:"||${this.app}"`);
+    }
+    
     if (this.certIgnore) {
       params.push('/cert-ignore');
     }

@@ -10,19 +10,19 @@
               "node-freerdp2.cc"
             ],
             "libraries": [
-              "-lfreerdp2",
               "-lfreerdp-client2",
               "-lwinpr2",
+              "-lfreerdp2",
               "-lws2_32",
               "-lcliprdr-client",
             ],
             "library_dirs":[
-                "D:\Playground\C\FreeRDP\Debug"
+                "D:\Playground\C\\x64\FreeRDP\\Release"
             ],
             "include_dirs" : [
              "<!(node -e \"require('nan')\")",
-             "D:\Playground\C\FreeRDP\include",
-             "D:\Playground\C\FreeRDP\winpr\include"
+             "D:\Playground\C\\x64\FreeRDP\include",
+             "D:\Playground\C\\x64\FreeRDP\winpr\include"
       ]
         }
     ],

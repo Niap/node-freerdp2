@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-.vscode
-/build/
-node_modules
-=======
 build
 node_modules
 test.js
 *.png
->>>>>>> 7125b6c647554f8e4d7fa8e5d80ce484f14dd150
