@@ -2,7 +2,6 @@ var rdp = require('./build/Release/node-freerdp2');
 var EventEmitter = require('events');
 
 // This is from include/freerdp/input.h to simplify addon code
-const PTR_FLAGS_WHEEL           = 0x0200
 const PTR_FLAGS_WHEEL_NEGATIVE  = 0x0100
 const PTR_FLAGS_MOVE            = 0x0800
 const PTR_FLAGS_DOWN            = 0x8000
