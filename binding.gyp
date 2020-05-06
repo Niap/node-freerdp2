@@ -20,20 +20,19 @@
             "conditions":[
                 ["OS=='win'", {
                   "library_dirs":[
-                      "D:\Playground\C\\x64\FreeRDP\\Release"
+                      "libs/win64/libs"
                   ],
                   "include_dirs" : [
                     "<!(node -e \"require('nan')\")",
-                    "D:\Playground\C\\x64\FreeRDP\include",
-                    "D:\Playground\C\\x64\FreeRDP\winpr\include"
+                    "libs/win64/include",
                   ],
                   "copies":[
                       { 
                           'destination': './build/Release',
                           'files':[
-                            "dll/freerdp-client2.dll",
-                            "dll/freerdp2.dll",
-                            "dll/winpr2.dll"
+                            "libs/win64/dll/freerdp-client2.dll",
+                            "libs/win64/dll/freerdp2.dll",
+                            "libs/win64/dll/winpr2.dll"
                           ]
                       }
                   ]}]
