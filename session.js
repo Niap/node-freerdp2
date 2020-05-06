@@ -39,12 +39,11 @@ class Session extends EventEmitter {
       flags |= PTR_FLAGS_WHEEL;
     
 
-    if (step < 0)
+    if (isNegative)
     {
       flags |= PTR_FLAGS_WHEEL_NEGATIVE;
-      step = -step;
     }
-    flags |= step;
+    flags += step;
     rdp.sendPointerEvent(this._sessionIndex, flags, x, y);
   }
 
