@@ -6,6 +6,8 @@
               "rdp.cc",
               "bridge.cc",
               "generator.cc",
+              "channel.cc",
+              "rail.cc",
               "context.cc",
               "node-freerdp2.cc"
             ],

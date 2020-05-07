@@ -3,6 +3,8 @@
 
 #include <freerdp/freerdp.h>
 
+#include <freerdp/client/rail.h>
+
 #include "generator.h"
 
 struct node_info
@@ -13,7 +15,8 @@ typedef struct node_info nodeInfo;
 
 struct node_context
 {
-  rdpContext _p;
+  rdpContext context;
+	DEFINE_RDP_CLIENT_COMMON();
 
   nodeInfo* nodei;
   GeneratorContext *generatorContext;
@@ -23,6 +26,7 @@ struct node_context
   //BOOL is_connected;
 
   void* clipboard_context;
+	RailClientContext* rail;
 };
 typedef struct node_context nodeContext;
 

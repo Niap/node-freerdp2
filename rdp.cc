@@ -7,6 +7,7 @@
 #include "rdp.h"
 #include "generator.h"
 #include "context.h"
+#include "channel.h"
 #include <stdio.h>
 
 #include <freerdp/freerdp.h>
@@ -180,7 +181,11 @@ static BOOL tf_pre_connect(freerdp* instance)
 	settings->OrderSupport[NEG_ELLIPSE_SC_INDEX] = FALSE;
 	settings->OrderSupport[NEG_ELLIPSE_CB_INDEX] = FALSE;
 
+	if (!freerdp_client_load_addins(instance->context->channels, instance->settings))
+		return -1;
 
+	PubSub_SubscribeChannelConnected(instance->context->pubSub,node_OnChannelConnectedEventHandler);
+	PubSub_SubscribeChannelDisconnected(instance->context->pubSub,node_OnChannelDisconnectedEventHandler);
 
 	return TRUE;
 }
@@ -342,10 +347,6 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 	{
 		return 0;
 	}
-
-	if (!freerdp_client_load_addins(instance->context->channels,
-		instance->settings))
-		return -1;
 
 	data = (struct thread_data*) malloc(sizeof(struct thread_data));
 	ZeroMemory(data, sizeof(sizeof(struct thread_data)));

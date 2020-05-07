@@ -95,7 +95,7 @@ class Session extends EventEmitter {
 
 
     if (this.app) {
-      params.push(`/app:"||${this.app}"`);
+      params.push(`/app:||${this.app}`);
     }
     
     if (this.certIgnore) {
