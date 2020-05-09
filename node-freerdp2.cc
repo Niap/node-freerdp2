@@ -22,8 +22,12 @@ NAN_MODULE_INIT(InitAll) {
   Set(target, New<String>("sendPointerEvent").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(SendPointerEvent)).ToLocalChecked());
 
+  Set(target, New<String>("sendClipboard").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(SendClipboard)).ToLocalChecked());
+
   Set(target, New<String>("close").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(Close)).ToLocalChecked());
+    
 }
 
 NODE_MODULE(addon, InitAll)

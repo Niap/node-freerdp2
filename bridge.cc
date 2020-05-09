@@ -2,6 +2,7 @@
 
 #include "bridge.h"
 #include "rdp.h"
+#include "clipboard.h"
 
 using v8::Function;
 using v8::Local;
@@ -70,3 +71,13 @@ NAN_METHOD(SendPointerEvent) {
 
   node_freerdp_send_pointer_event(session_index, flags, x, y);
 }
+
+
+
+NAN_METHOD(SendClipboard) {
+  int session_index = info[0]->Uint32Value();
+  String::Utf8Value  clipboardString(info[1]->ToString());
+  std::string stdClipboardString = std::string(*clipboardString);
+  node_freerdp_cliprdr_set_data(session_index, (byte *)stdClipboardString.c_str(), stdClipboardString.length()+1 );
+}
+

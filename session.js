@@ -18,7 +18,7 @@ class Session extends EventEmitter {
     this.host = options.host;
     this.username = options.username;
     this.password = options.password;
-    this.s_domain = options.domain;// EventEmitter 本省有个domain
+    this.s_domain = options.domain;// EventEmitter 本身有个domain
     this.port = options.port || 3389;
     this.width = options.width || 1366;
     this.height = options.height || 768;
@@ -26,7 +26,9 @@ class Session extends EventEmitter {
     this.certIgnore = options.certIgnore;
     this.app = options.app;
   }
-
+  sendClipboard(data) {
+    rdp.sendClipboard(this._sessionIndex,data);
+  }
   sendKeyEventScancode(code, pressed) {
     rdp.sendKeyEventScancode(this._sessionIndex, code, pressed);
   }
@@ -90,7 +92,7 @@ class Session extends EventEmitter {
     params.push(`/h:${this.height}`);
     params.push(`/bpp:${this.bitsPerPixel}`);
 
-    params.push('-clipboard');
+    params.push('+clipboard');
     //params.push('/log-level:debug')
 
 

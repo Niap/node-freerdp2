@@ -8,6 +8,7 @@
 #include "generator.h"
 #include "context.h"
 #include "channel.h"
+#include "clipboard.h"
 #include <stdio.h>
 
 #include <freerdp/freerdp.h>
@@ -391,4 +392,14 @@ void node_freerdp_send_pointer_event(int session_index, int flags, int x, int y)
   rdpInput* input = instance->input;
 
   freerdp_input_send_mouse_event(input, flags, x, y);
+}
+
+void node_freerdp_cliprdr_set_data(int session_index,byte* clipboardData,int length) {
+	thread_data* session = sessions[session_index];
+	freerdp* instance = session->instance;
+	nodeContext * nContext = (nodeContext*)instance->context;
+	nContext->clipboard->length = length;
+	nContext->clipboard->buffer = (byte *)malloc(length);
+	memcpy(nContext->clipboard->buffer,clipboardData,length);
+	cliprdr_send_format_list(nContext->clipboard_context);
 }

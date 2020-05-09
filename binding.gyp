@@ -8,6 +8,7 @@
               "generator.cc",
               "channel.cc",
               "rail.cc",
+              "clipboard.cc",
               "context.cc",
               "node-freerdp2.cc"
             ],

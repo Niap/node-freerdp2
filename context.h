@@ -4,8 +4,15 @@
 #include <freerdp/freerdp.h>
 
 #include <freerdp/client/rail.h>
+#include <freerdp/client/cliprdr.h>
 
 #include "generator.h"
+
+typedef struct _NodeClipboard {
+	byte* buffer;
+	int length;
+} NodeClipboard;
+
 
 struct node_info
 {
@@ -25,8 +32,9 @@ struct node_context
   //pthread_t thread;
   //BOOL is_connected;
 
-  void* clipboard_context;
 	RailClientContext* rail;
+  NodeClipboard * clipboard;
+  CliprdrClientContext* clipboard_context;
 };
 typedef struct node_context nodeContext;
 
