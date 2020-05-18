@@ -65,7 +65,7 @@ UINT node_cliprdr_server_format_data_response(CliprdrClientContext* context,CLIP
 BOOL node_cliprdr_init(nodeContext* swfc, CliprdrClientContext* cliprdr) {
 
 	NodeClipboard * clipboard = (NodeClipboard*)malloc(sizeof(NodeClipboard));
-	char * defaultClip = "who is your daddy.";
+	char * defaultClip = "whosyourdaddy";
 	clipboard->length = strlen(defaultClip)+1;
 	clipboard->buffer = (byte *)defaultClip;
 	swfc->clipboard = clipboard;
