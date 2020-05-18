@@ -12,7 +12,7 @@ libws2_32(windows)
 This is based on node-freerdp,devplop with freerdp 2.0.0-rc4 ,Support remote app、clipboard.
 
 # Example Usage
-
+```cpp
 var freerdp = require('./index');
 
 var rdp = new freerdp.Session({
@@ -32,7 +32,7 @@ setTimeout(function(){
 setTimeout(function(){
     rdp.close();
 },10000) //dalay
-
+```
 # Build with mstsc.js
 
 https://github.com/Niap/mstsc.js
