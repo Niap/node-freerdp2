@@ -44,11 +44,17 @@ Local<Array> connect_args_parser(void *generic) {
   free(args);
   return argv;
 }
-struct close_args {};
+
+struct close_args {
+	char * msg;
+};
 
 Local<Array> close_args_parser(void *generic) {
-  connect_args *args = static_cast<connect_args *>(generic);
+  close_args *args = static_cast<close_args *>(generic);
   Local<Array> argv = New<Array>();
+  Local<Object> obj = New<Object>();
+  obj->Set(New<String>("msg").ToLocalChecked(), New<String>(args->msg).ToLocalChecked());
+  argv->Set(0, obj);
   free(args);
   return argv;
 }
@@ -103,10 +109,15 @@ static DWORD WINAPI tf_client_thread_proc(LPVOID arg)
 	rdpChannels* channels = instance->context->channels;
 	rdpContext*  context = instance->context;
 
+	nodeContext *nc = (nodeContext*)instance->context;
+	close_args *args = (close_args *)malloc(sizeof(close_args));
+	args->msg = "normal";
+
 	if (!freerdp_connect(instance))
 	{
+		args->msg = "connection failure";
 		WLog_ERR(TAG, "connection failure");
-		return 0;
+		goto error;
 	}
 
 	while (!freerdp_shall_disconnect(instance))
@@ -140,8 +151,9 @@ static DWORD WINAPI tf_client_thread_proc(LPVOID arg)
 			break;
 		}
 	}
-	nodeContext *nc = (nodeContext*)instance->context;
-	close_args *args = (close_args *)malloc(sizeof(close_args));
+error:
+
+	
 	generator_emit(nc->generatorContext, &CLOSE_GENERATOR_TYPE, args);
 	
  	free(nc->generatorContext);
