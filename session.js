@@ -25,6 +25,7 @@ class Session extends EventEmitter {
     this.bitsPerPixel = 24;
     this.certIgnore = options.certIgnore;
     this.app = options.app;
+    this.drive = options.drive;
   }
   sendClipboard(data) {
     rdp.sendClipboard(this._sessionIndex,data);
@@ -98,6 +99,10 @@ class Session extends EventEmitter {
 
     if (this.app) {
       params.push(`/app:||${this.app}`);
+    }
+
+    if (this.drive) {
+      params.push(`/drive:"${this.drive}"`);
     }
     
     if (this.certIgnore) {

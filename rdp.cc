@@ -156,12 +156,7 @@ error:
 	
 	generator_emit(nc->generatorContext, &CLOSE_GENERATOR_TYPE, args);
 	
- 	free(nc->generatorContext);
-	freerdp_disconnect(instance);
-	WSACleanup();
-	freerdp_context_free(instance);
 	freerdp_free(instance);
-
 	ExitThread(0);
 	return 0;
 }
@@ -291,6 +286,11 @@ static BOOL tf_end_paint(rdpContext* context)
 	return TRUE;
 }
 
+static void  tf_post_disconnect(freerdp* instance)
+{
+	WSACleanup();
+}
+
 static BOOL tf_post_connect(freerdp* instance)
 {
 	if (!gdi_init(instance, PIXEL_FORMAT_RGBX32))
@@ -334,6 +334,7 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 
 	instance->PreConnect = tf_pre_connect;
 	instance->PostConnect = tf_post_connect;
+	instance->PostDisconnect = tf_post_disconnect;
 	instance->ContextSize = sizeof(nodeContext);
 	instance->ContextNew = tf_context_new;
 	instance->ContextFree = tf_context_free;
