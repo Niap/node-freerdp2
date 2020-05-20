@@ -148,6 +148,7 @@ static DWORD WINAPI tf_client_thread_proc(LPVOID arg)
 			break;
 		}
 		if(data->stopping){
+			WLog_INFO(TAG,"Client stoped");
 			break;
 		}
 	}
