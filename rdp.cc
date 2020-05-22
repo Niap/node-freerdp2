@@ -156,7 +156,7 @@ error:
 
 	
 	generator_emit(nc->generatorContext, &CLOSE_GENERATOR_TYPE, args);
-	
+	freerdp_disconnect(instance);
 	freerdp_free(instance);
 	ExitThread(0);
 	return 0;
