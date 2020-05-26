@@ -35,7 +35,9 @@
                           'files':[
                             "libs/win64/dll/freerdp-client2.dll",
                             "libs/win64/dll/freerdp2.dll",
-                            "libs/win64/dll/winpr2.dll"
+                            "libs/win64/dll/winpr2.dll",
+                            "libs/win64/dll/libcrypto-1_1-x64.dll",
+                            "libs/win64/dll/libssl-1_1-x64.dll",
                           ]
                       }
                   ]}]

@@ -152,11 +152,9 @@ static DWORD WINAPI tf_client_thread_proc(LPVOID arg)
 			break;
 		}
 	}
-error:
-
-	
-	generator_emit(nc->generatorContext, &CLOSE_GENERATOR_TYPE, args);
 	freerdp_disconnect(instance);
+error:
+	generator_emit(nc->generatorContext, &CLOSE_GENERATOR_TYPE, args);
 	freerdp_free(instance);
 	ExitThread(0);
 	return 0;
