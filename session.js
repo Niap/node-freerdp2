@@ -27,6 +27,9 @@ class Session extends EventEmitter {
     this.app = options.app;
     this.drive = options.drive;
   }
+  requestKeyframe() {
+    rdp.requestKeyframe(this._sessionIndex);
+  }
   sendClipboard(data) {
     rdp.sendClipboard(this._sessionIndex,data);
   }

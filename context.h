@@ -35,6 +35,7 @@ struct node_context
 	RailClientContext* rail;
   NodeClipboard * clipboard;
   CliprdrClientContext* clipboard_context;
+  bool keyframe;
 };
 typedef struct node_context nodeContext;
 

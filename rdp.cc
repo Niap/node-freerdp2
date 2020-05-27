@@ -245,39 +245,49 @@ const struct GeneratorType DRAW_GENERATOR_TYPE = {"bitmap",draw_args_parser};
 
 static BOOL tf_end_paint(rdpContext* context)
 {
-	rdpGdi* gdi = context->gdi;
-	if (gdi->primary->hdc->hwnd->invalid->null)
-		return TRUE;
-
-	int ninvalid = gdi->primary->hdc->hwnd->ninvalid;
-
-	if (ninvalid < 1)
-		return TRUE;
-
-	draw_args *args = new draw_args;
-	args->x = gdi->primary->hdc->hwnd->invalid->x;
-	args->y = gdi->primary->hdc->hwnd->invalid->y;
-	args->w = gdi->primary->hdc->hwnd->invalid->w;
-	args->h = gdi->primary->hdc->hwnd->invalid->h;
-
-
-	args->bpp = 4;
-
-	int size = args->w * args->h * args->bpp;
-	args->buffer = new BYTE[size];
-
-	int dest_pos = 0;
-	int dest_line_width = args->w * args->bpp;
-	for(int i = args->y; i < args->y + args->h; i++) {
-	// memcopy only columns that are relevant
-		int start_pos = (i * gdi->width * args->bpp) + (args->x * args->bpp);
-		BYTE* src = &gdi->primary_buffer[start_pos];
-		BYTE* dest = &args->buffer[dest_pos];
-		memcpy(dest, src, dest_line_width);
-		dest_pos += dest_line_width;
-	}
-
 	nodeContext *nc = (nodeContext*)context;
+	rdpGdi* gdi = context->gdi;
+	draw_args *args = new draw_args;
+	args->bpp = 4;
+	if(nc->keyframe){
+		args->x = 0;
+		args->y = 0;
+		args->w = gdi->width ;
+		args->h = gdi->height;
+		int size = args->w * args->h * args->bpp;
+		args->buffer = new BYTE[size];
+		memcpy(args->buffer, gdi->primary_buffer, size);
+		nc->keyframe=false;
+	}else{
+		if (gdi->primary->hdc->hwnd->invalid->null)
+			return TRUE;
+
+		int ninvalid = gdi->primary->hdc->hwnd->ninvalid;
+
+		if (ninvalid < 1)
+			return TRUE;
+
+		args->x = gdi->primary->hdc->hwnd->invalid->x;
+		args->y = gdi->primary->hdc->hwnd->invalid->y;
+		args->w = gdi->primary->hdc->hwnd->invalid->w;
+		args->h = gdi->primary->hdc->hwnd->invalid->h;
+
+
+		int size = args->w * args->h * args->bpp;
+		args->buffer = new BYTE[size];
+
+		int dest_pos = 0;
+		int dest_line_width = args->w * args->bpp;
+		for(int i = args->y; i < args->y + args->h; i++) {
+		// memcopy only columns that are relevant
+			int start_pos = (i * gdi->width * args->bpp) + (args->x * args->bpp);
+			BYTE* src = &gdi->primary_buffer[start_pos];
+			BYTE* dest = &args->buffer[dest_pos];
+			memcpy(dest, src, dest_line_width);
+			dest_pos += dest_line_width;
+		}
+	}
+	
 	generator_emit(nc->generatorContext, &DRAW_GENERATOR_TYPE, args);
 
 	//tf_save_dib(context, args->w, args->h, context->gdi->dstFormat, args->buffer, NULL);
@@ -342,6 +352,7 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 	nContext = (nodeContext*)instance->context;
 	nContext->generatorContext = new GeneratorContext;
 	nContext->generatorContext->callback = callback;
+	nContext->keyframe = false;
 
 
 
@@ -366,7 +377,6 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 	data->instance = instance;
 	data->stopping = false;
 
-
 	thread = CreateThread(NULL, 0, tf_client_thread_proc, data, 0, NULL);
 	
 	
@@ -378,6 +388,16 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 
     return index;
 }
+
+void node_freerdp_request_keyframe(int session_index)
+{
+  // NOTE: Doesn't block on closed session, will send closed event when completed
+  thread_data *session = sessions[session_index];
+  nodeContext * nContext = (nodeContext*)session->instance->context;
+  nContext->keyframe = true;
+  //freerdp_disconnect(session->instance);
+}
+
 
 
 void node_freerdp_close(int session_index)

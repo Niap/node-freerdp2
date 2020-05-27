@@ -42,6 +42,13 @@ NAN_METHOD(Connect) {
   info.GetReturnValue().Set(session_index);
 }
 
+NAN_METHOD(RequestKeyframe) {
+  Nan::HandleScope scope;
+  int session_index = info[0]->Uint32Value();
+  node_freerdp_request_keyframe(session_index);
+}
+
+
 NAN_METHOD(Close) {
   Nan::HandleScope scope;
 

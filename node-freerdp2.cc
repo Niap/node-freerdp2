@@ -27,6 +27,9 @@ NAN_MODULE_INIT(InitAll) {
 
   Set(target, New<String>("close").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(Close)).ToLocalChecked());
+
+  Set(target, New<String>("requestKeyframe").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(RequestKeyframe)).ToLocalChecked());
     
 }
 

@@ -8,5 +8,6 @@ NAN_METHOD(Close);
 NAN_METHOD(SendKeyEventScancode);
 NAN_METHOD(SendPointerEvent);
 NAN_METHOD(SendClipboard);
+NAN_METHOD(RequestKeyframe);
 
 #endif  // NODE_FREERDP_BRIDGE_H
