@@ -102,7 +102,7 @@ class Session extends EventEmitter {
     }
 
     if (this.drive) {
-      params.push(`/drive:"${this.drive}"`);
+      params.push(`/drive:RemoteApp,${this.drive}`);
     }
     
     if (this.certIgnore) {
