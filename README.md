@@ -1,5 +1,5 @@
 # node-freerdp2
-Node.js addon for libfreerdp2
+Node.js addon for libfreerdp2 (just for windows)
 
 # Dependencies
 libfreerdp-client2
