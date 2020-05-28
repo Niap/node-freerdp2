@@ -10,6 +10,7 @@
               "rail.cc",
               "clipboard.cc",
               "context.cc",
+              "pointer.cc",
               "node-freerdp2.cc"
             ],
             "libraries": [

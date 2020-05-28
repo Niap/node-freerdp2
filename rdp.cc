@@ -1,40 +1,8 @@
-
-
-#include <winsock2.h>
-#include <Windows.h>
-#include <ws2tcpip.h>
-
 #include "rdp.h"
 #include "generator.h"
-#include "context.h"
 #include "channel.h"
 #include "clipboard.h"
-#include <stdio.h>
-
-#include <freerdp/freerdp.h>
-#include <freerdp/constants.h>
-#include <freerdp/log.h>
-#include <freerdp/gdi/gdi.h>
-#include <freerdp/client/cmdline.h>
-#include <freerdp/client/channels.h>
-#include <freerdp/channels/channels.h>
-
-#include <winpr/crt.h>
-#include <winpr/synch.h>
-
-#include <nan.h>
-
-using Nan::Callback;
-
-using v8::Object;
-using v8::Array;
-using v8::Number;
-using v8::Value;
-using v8::Local;
-using v8::String;
-using Nan::New;
-using Nan::Null;
-
+#include "pointer.h"
 
 struct connect_args {};
 
@@ -354,7 +322,7 @@ int node_freerdp_connect(int argc, char* argv[], Callback *callback)
 	nContext->generatorContext->callback = callback;
 	nContext->keyframe = false;
 
-
+	node_register_pointer(instance->context->graphics);
 
 	freerdp_register_addin_provider(freerdp_channels_load_static_addin_entry, 0);
 
