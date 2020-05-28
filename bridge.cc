@@ -83,8 +83,11 @@ NAN_METHOD(SendPointerEvent) {
 
 NAN_METHOD(SendClipboard) {
   int session_index = info[0]->Uint32Value();
-  String::Utf8Value  clipboardString(info[1]->ToString());
-  std::string stdClipboardString = std::string(*clipboardString);
-  node_freerdp_cliprdr_set_data(session_index, (byte *)stdClipboardString.c_str(), stdClipboardString.length()+1 );
+  String::Value  clipboardString(info[1]->ToString());
+  int length = clipboardString.length()+1;
+  int size = (length) * 2;
+  byte * data = (byte *)malloc(size);
+  memcpy(data, *clipboardString, size);
+  node_freerdp_cliprdr_set_data(session_index, data, size);
 }
 

@@ -20,7 +20,7 @@ UINT cliprdr_send_format_list(CliprdrClientContext* cliprdr) {
 	CLIPRDR_FORMAT* formats = (CLIPRDR_FORMAT*) calloc(1, sizeof(CLIPRDR_FORMAT));
 	CLIPRDR_FORMAT_LIST format_list;
 
-	formats[0].formatId = CF_TEXT;
+	formats[0].formatId = CF_UNICODETEXT;
 
 	format_list.formats = formats;
 	format_list.numFormats = 1;
@@ -52,7 +52,6 @@ UINT node_cliprdr_server_format_data_request(CliprdrClientContext* context, CLIP
 		rc = context->ClientFormatDataResponse(context,&response);
 	}
 	
-	
 	return rc;
 }
 
@@ -60,13 +59,11 @@ UINT node_cliprdr_server_format_data_response(CliprdrClientContext* context,CLIP
 	return CHANNEL_RC_OK;
 }
 
-
-
 BOOL node_cliprdr_init(nodeContext* swfc, CliprdrClientContext* cliprdr) {
 
 	NodeClipboard * clipboard = (NodeClipboard*)malloc(sizeof(NodeClipboard));
-	char * defaultClip = "whosyourdaddy";
-	clipboard->length = strlen(defaultClip)+1;
+	wchar_t * defaultClip = L"whosyourdaddy";
+	clipboard->length = (wcslen(defaultClip)+1)*2;
 	clipboard->buffer = (byte *)defaultClip;
 	swfc->clipboard = clipboard;
 	swfc->clipboard_context = cliprdr;

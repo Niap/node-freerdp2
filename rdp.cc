@@ -431,7 +431,6 @@ void node_freerdp_cliprdr_set_data(int session_index,byte* clipboardData,int len
 	freerdp* instance = session->instance;
 	nodeContext * nContext = (nodeContext*)instance->context;
 	nContext->clipboard->length = length;
-	nContext->clipboard->buffer = (byte *)malloc(length);
-	memcpy(nContext->clipboard->buffer,clipboardData,length);
+	nContext->clipboard->buffer = clipboardData;
 	cliprdr_send_format_list(nContext->clipboard_context);
 }
