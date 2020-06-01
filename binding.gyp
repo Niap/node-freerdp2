@@ -40,6 +40,7 @@
                             "libs/win64/dll/libcrypto-1_1-x64.dll",
                             "libs/win64/dll/libssl-1_1-x64.dll",
                             "libs/win64/dll/libusb-1.0.dll",
+                            "libs/win64/dll/vcruntime140.dll",
                           ]
                       }
                   ]}]
