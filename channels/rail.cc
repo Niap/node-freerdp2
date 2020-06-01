@@ -1,4 +1,4 @@
-#include "context.h"
+#include "rail.h"
 
 static UINT node_rail_server_handshake(RailClientContext* context,
 	RAIL_HANDSHAKE_ORDER* handshake)

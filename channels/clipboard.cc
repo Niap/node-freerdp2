@@ -66,12 +66,12 @@ BOOL node_cliprdr_init(nodeContext* swfc, CliprdrClientContext* cliprdr) {
 	clipboard->length = (wcslen(defaultClip)+1)*2;
 	clipboard->buffer = (byte *)defaultClip;
 	swfc->clipboard = clipboard;
-	swfc->clipboard_context = cliprdr;
+	swfc->clipboardContext = cliprdr;
 	cliprdr->custom = swfc;
 
-	cliprdr->MonitorReady = node_cliprdr_monitor_ready;
-	cliprdr->ServerFormatDataRequest = node_cliprdr_server_format_data_request;
-	cliprdr->ServerFormatDataResponse = node_cliprdr_server_format_data_response;
+	cliprdr->MonitorReady = reinterpret_cast<pcCliprdrMonitorReady>(node_cliprdr_monitor_ready);
+	cliprdr->ServerFormatDataRequest = reinterpret_cast<pcCliprdrServerFormatDataRequest>(node_cliprdr_server_format_data_request);
+	cliprdr->ServerFormatDataResponse = reinterpret_cast<pcCliprdrServerFormatDataResponse>(node_cliprdr_server_format_data_response);
 
 	return TRUE;
 }

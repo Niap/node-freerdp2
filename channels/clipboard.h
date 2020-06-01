@@ -1,4 +1,4 @@
-#include "context.h"
+#include "../context.h"
 
 BOOL node_cliprdr_init(nodeContext* swfc, CliprdrClientContext* cliprdr);
 void node_cliprdr_uninit(nodeContext* swfc, CliprdrClientContext* cliprdr);

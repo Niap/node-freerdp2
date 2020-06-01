@@ -1,6 +1,7 @@
 #ifndef NODE_FREERDP_CONTEXT_H
 #define NODE_FREERDP_CONTEXT_H
 
+#pragma comment(lib, "DbgHelp.lib")
 
 #include <winsock2.h>
 #include <Windows.h>
@@ -37,6 +38,11 @@ using Nan::New;
 using Nan::Null;
 
 
+typedef struct _SessionData
+{
+	freerdp* instance;
+	bool stopping;
+}SessionData;
 typedef struct _NodePointer
 {
 	rdpPointer pointer;
@@ -50,28 +56,15 @@ typedef struct _NodeClipboard {
 	int length;
 } NodeClipboard;
 
-
-struct node_info
-{
-  void* data;
-};
-typedef struct node_info nodeInfo;
-
 struct node_context
 {
   rdpContext context;
-	DEFINE_RDP_CLIENT_COMMON();
-
-  nodeInfo* nodei;
+  DEFINE_RDP_CLIENT_COMMON();
+  SessionData * session;
   GeneratorContext *generatorContext;
-
-  //ANDROID_EVENT_QUEUE* event_queue;
-  //pthread_t thread;
-  //BOOL is_connected;
-
 	RailClientContext* rail;
   NodeClipboard * clipboard;
-  CliprdrClientContext* clipboard_context;
+  CliprdrClientContext* clipboardContext;
   bool keyframe;
 };
 typedef struct node_context nodeContext;

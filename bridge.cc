@@ -2,7 +2,6 @@
 
 #include "bridge.h"
 #include "rdp.h"
-#include "clipboard.h"
 
 using v8::Function;
 using v8::Local;

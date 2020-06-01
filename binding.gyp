@@ -6,12 +6,12 @@
               "rdp.cc",
               "bridge.cc",
               "generator.cc",
-              "channel.cc",
-              "rail.cc",
-              "clipboard.cc",
               "context.cc",
-              "pointer.cc",
-              "node-freerdp2.cc"
+              "node-freerdp2.cc",
+              "channels/channel.cc",
+              "channels/rail.cc",
+              "channels/clipboard.cc",
+              "channels/pointer.cc",
             ],
             "libraries": [
               "-lfreerdp-client2",
@@ -24,7 +24,7 @@
             "conditions":[
                 ["OS=='win'", {
                   "library_dirs":[
-                      "libs/win64/libs"
+                    "libs/win64/libs"
                   ],
                   "include_dirs" : [
                     "<!(node -e \"require('nan')\")",
@@ -39,6 +39,7 @@
                             "libs/win64/dll/winpr2.dll",
                             "libs/win64/dll/libcrypto-1_1-x64.dll",
                             "libs/win64/dll/libssl-1_1-x64.dll",
+                            "libs/win64/dll/libusb-1.0.dll",
                           ]
                       }
                   ]}]
