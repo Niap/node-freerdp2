@@ -41,6 +41,7 @@
                             "libs/win64/dll/libssl-1_1-x64.dll",
                             "libs/win64/dll/libusb-1.0.dll",
                             "libs/win64/dll/vcruntime140.dll",
+                            "libs/win64/dll/openh264.dll",
                           ]
                       }
                   ]}]
